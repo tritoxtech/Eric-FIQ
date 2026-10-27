@@ -326,7 +326,7 @@ function analyze(t,filename){
  if(type==='Auto'||type==='Bundle'){
  if(!auto)add(false,'Auto quote','Auto section present','Missing');else{
  dateCheck(auto,'Auto');const farmers=!/Bristol\s+West\s+Auto\s+quote/i.test(auto);const carrier=farmers?'Farmers':'Bristol West';
- if(farmers)add(/Signal\s+by\s+Farmers/i.test(discounts(auto)),'Signal by Farmers','Included',/Signal\s+by\s+Farmers/i.test(discounts(auto))?'Included':'Not found');
+ if(farmers){const signalDiscount=/\bSignal\b\s*(?:®|™|\(R\))?(?:\s+by\s+Farmers\b)?/i.test(discounts(auto));add(signalDiscount,'Signal by Farmers','Included',signalDiscount?'Included':'Not found');}
  const autoDiscount=/Auto\s*\/\s*(?:Farmers\s+)?Home(?:\s*\/\s*Condo)?|Home\s*\/\s*Auto/i.test(discounts(auto));add(autoDiscount,'Auto discount: Auto/Home/Condo','Included',autoDiscount?'Included':'Not found');
  const tort=field(auto,farmers?/Limited\s+tort/i:/\bTORT\b/i);const tortYes=farmers?(/^(?:Yes|Included|Selected|Limited)\b/i.test(tort)||/Tort\s*(?:option|selection)?\s*[:–—-]?\s*Limited\b/i.test(auto)):/^Limited\b/i.test(tort);add(tortYes,'Limited Tort',farmers?'Yes / Limited':'Limited',tortYes?(farmers?'Yes':'Limited'):tort||'Not found');
  vehicles=extractVehicles(auto);if(!vehicles.length)add(false,'Vehicles','Detect every vehicle','No vehicles detected',true);
